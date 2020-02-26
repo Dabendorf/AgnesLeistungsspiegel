@@ -9,9 +9,12 @@ public class Main {
         AgnesAdapter agnes = new AgnesAdapter();
         ui.Log("Agnes-adapter initialized");
 
-        String user = ui.getLine("Please enter your Agnes user name");
+        //TODO Hier PW und Nutzername eingeben
+        //String user = ui.getLine("Please enter your Agnes user name");
+        String user = "username";
         // TODO: validate user, eg only lowercase, max 8 char, text only
-        String pass = ui.getLine("Please enter your Agnes password", true);
+        //String pass = ui.getLine("Please enter your Agnes password", true);
+        String pass = "password";
 
         ui.Log("Contacting Agnes..");
         AgnesAdapter.AgnesLogonResult result = agnes.signIn(user, pass);

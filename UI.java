@@ -25,9 +25,9 @@ class UI {
 
     void Log(String msg, boolean newLine) {
         if (legacyMode) {
-            System.out.print(msg + (newLine ? "\n" : ""));
+            //System.out.print(msg + (newLine ? "\n" : "")); //DEBUG Meldungen von Niklas deaktiviert
         } else {
-            console.writer().print(msg + (newLine ? "\n" : ""));
+            //console.writer().print(msg + (newLine ? "\n" : ""));
             console.flush();
         }
     }
