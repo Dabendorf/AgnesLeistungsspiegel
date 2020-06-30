@@ -22,7 +22,7 @@ public class Main {
         //file containts two lines seperated by newline, first username, second password
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader("login.txt"));
+            reader = new BufferedReader(new FileReader("internal/login.txt"));
             String line = reader.readLine();
             if(line != null) {
                 user = line;

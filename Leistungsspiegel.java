@@ -20,35 +20,8 @@ public class Leistungsspiegel {
         abschlüsse = new ArrayList<>();
 
         String preparedLS = prepareLeistungsspiegel(rawLeistungsspiegelHtml);
-        String filename = "internal/leistungsspiegel.txt";
-        
-        //System.out.println(preparedLS); //PRINT leistungsspiegel
-        try {
-            String content = "Empty";
-            try {
-                content = new String(Files.readAllBytes(Paths.get(filename)));
-            } catch(NoSuchFileException e) {
-                FileWriter fw = new FileWriter(filename);
-                fw.write("Empty");
-                fw.close();
-            }
-            
+        System.out.println(preparedLS); //PRINT leistungsspiegel
 
-            if(content.equals(preparedLS)) {
-                //System.exit(0);
-                System.out.println("TRUE");
-            } else {
-                //System.exit(1);
-                System.out.println("FALSE");
-            }
-            FileWriter fw = new FileWriter(filename);
-            fw.write(preparedLS);
-         
-            fw.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        
         //Parse(preparedLS);
     }
 
@@ -116,9 +89,9 @@ public class Leistungsspiegel {
         leistungspiegel = leistungspiegel.replaceAll("\\-\\-\\|\\-\\-  \\-\\-\\|\\-\\-  \\-\\-\\|\\-\\-", "--|--");
 
         // add line breaks after each table row
-        leistungspiegel = leistungspiegel.replace("</tr>", "\n");
+        leistungspiegel = leistungspiegel.replaceAll("</tr>", "\n");
 
-        // at this point, only our delimiters should be left - let's replace them with something a little shortter/nicer
+        // at this point, only our delimiters should be left - let's replace them with something a little shorter/nicer
         leistungspiegel = leistungspiegel.replaceAll("\\-\\-\\|\\-\\-", "\t");
 
         // Lukas Aenderungen
@@ -130,32 +103,20 @@ public class Leistungsspiegel {
 
         Line[] lines = new Line[leistungsspiegelTable.length]; //because of html stuff
         for (int i = 2; i < lines.length - 2; ++i) {
-            if(leistungsspiegelTable[i].contains("bereich")) {
-                String[] content = leistungsspiegelTable[i].split("\t", 2);
+            if (leistungsspiegelTable[i].contains("bereich") && leistungsspiegelTable[i].contains("|")) {
+		String[] content = leistungsspiegelTable[i].split("\t", 2);
                 String[] cont2 = content[1].replace("\n", "").split("\\|");
                 lines[i] = new HeaderLine(content[0], cont2[0], cont2[1]);
             } else {
-                int count = leistungsspiegelTable[i].length() - leistungsspiegelTable[i].replace("\t", "").length();
-                if(count==10) {
+                int count = leistungsspiegelTable[i].length() - leistungsspiegelTable[i].replaceAll("\t", "").length();
+                if (count == 10) {
                     String[] content = leistungsspiegelTable[i].split("\t");
                     lines[i] = new DetailsLine(content[0], content[1], content[2], content[3], content[4], content[5], content[6], content[7], content[8], content[9], content[10]);
                 } else {
                     String[] content = leistungsspiegelTable[i].replace("\n", "").split("\t", 2);
-                    /*System.out.println("START");
-                    for(int p = 0; p < content[content.length-1].length() ;p++){   // while counting characters if less than the length add one        
-                        char character = content[content.length-1].charAt(p); // start on the first character
-                        int ascii = (int) character; //convert the first character
-                        System.out.println(character+" = "+ ascii); // print the character and it's value in ascii
-                    }
-                    System.out.println("ENDE");*/ //DEBUG
                     lines[i] = new CourseLine(content[0], content[1]);
                 }
             }
-
-            /*String[] content = leistungsspiegelTable[i].split("\t");
-            System.out.println(leistungsspiegelTable[i]);
-            System.out.println(content.length);
-            lines[i] = new Line(content[0], content[1], content[2], content[3], content[4], content[5], content[6], content[7], content[8], content[9], content[10]);*/
         }
 
         for (int i = 2; i < leistungsspiegelTable.length - 2; ++i) {

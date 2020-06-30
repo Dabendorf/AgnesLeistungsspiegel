@@ -1,0 +1,31 @@
+#!/bin/bash
+
+cd "$(dirname $0)"
+
+if [ ! -f Main.class ]; then
+  /usr/bin/javac *.java;
+fi
+
+cd internal
+
+touch ls.new
+touch ls.old
+
+mv ls.new ls.old
+
+rm ls.diff
+
+cd ..
+/usr/bin/java Main > internal/ls.new
+
+cd internal
+
+diff --unchanged-line-format= --old-line-format= --new-line-format='%L' ls.old ls.new > ls.diff
+
+if [ -s ls.diff ]; then
+  # /home/niklas/ALS/telegram.py "$(cat ls.diff)";
+  echo "Änderungen"
+  echo "$(cat ls.diff)";
+else
+  echo "Keine Änderungen"
+fi

@@ -13,31 +13,22 @@ public class DetailsLine extends Line {
 	public String semester;
 
 	public DetailsLine(String prfNr, String pruefung, String prfArt, String status, String note, String lP, String aL, String versuch, String vermerk, String datum, String semester) {
-		this.prfNr = prfNr;
-		if(pruefung.startsWith(" Norwegian Language and Culture for Foreign Language Students, Level 2")) {
-			this.pruefung = " Norwegisch";
-		} else {
-			this.pruefung = pruefung;
-		}
-		
-		this.prfArt = prfArt;
-		this.status = status;
-		this.note = note;
-		this.lP = lP;
-		this.aL = aL;
-		this.versuch = versuch;
-		this.vermerk = vermerk;
-		this.datum = datum;
-		this.semester = semester;
+		this.prfNr = prfNr.trim();
+		this.pruefung = pruefung.trim();
+		this.prfArt = prfArt.trim();
+		this.status = status.trim();
+		this.note = note.trim();
+		this.lP = lP.trim();
+		this.aL = aL.trim();
+		this.versuch = versuch.trim();
+		this.vermerk = vermerk.trim();
+		this.datum = datum.trim();
+		this.semester = semester.trim();
 	}
 
 	@Override
 	public String toString() {
-		//String sf1 = String.format("%-40s%s%n",name);
-		String str = String.format("%-6s %-50s %-5s %-20s %-5s %-5s %-5s %-3s %-3s %-12s %s", prfNr, pruefung, prfArt, status, note, lP, aL, versuch, vermerk, datum, semester);
-		//String str = String.format("%-6s %-60s %s", prfNr, pruefung, prfArt);
-		return str;
-		//return prfNr + "\t" + pruefung + "\t" + prfArt + "\t" + status + "\t" + note + "\t" + lP + "\t" + aL + "\t" + versuch + "\t" + vermerk + "\t" + datum + "\t" + semester;
+		return prfNr + " " + pruefung + " " + prfArt + " " + status + " " + note  + " " + lP + " " + aL + " " + versuch + " " + vermerk + " " + datum + " " + semester;
 	}
 
 }

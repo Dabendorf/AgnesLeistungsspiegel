@@ -5,15 +5,14 @@ public class HeaderLine extends Line {
 	public String punkte;
 
 	public HeaderLine(String prfNr, String name, String punkte) {
-		this.prfNr = prfNr;
-		this.name = name;
-		this.punkte = punkte;
+		this.prfNr = prfNr.trim();
+		this.name = name.trim();
+		this.punkte = punkte.trim();
 	}
 
 	@Override
 	public String toString() {
-		String str = String.format("%-6s %-50s %s\n", prfNr, name, punkte);
-		return str;
+		return prfNr + " " + name + " " + punkte;
 	}
 
 }
