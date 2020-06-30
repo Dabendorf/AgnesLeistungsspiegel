@@ -20,7 +20,7 @@ public class Leistungsspiegel {
         abschlüsse = new ArrayList<>();
 
         String preparedLS = prepareLeistungsspiegel(rawLeistungsspiegelHtml);
-        String filename = "leistungsspiegel.txt";
+        String filename = "internal/leistungsspiegel.txt";
         
         //System.out.println(preparedLS); //PRINT leistungsspiegel
         try {
