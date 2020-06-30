@@ -1,3 +1,10 @@
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.NoSuchFileException;
+
 public class Main {
     public static void main(String[] args) {
         String link = "";
@@ -9,12 +16,30 @@ public class Main {
         AgnesAdapter agnes = new AgnesAdapter();
         ui.Log("Agnes-adapter initialized");
 
+        String user = null;
+        String pass = null;
+
+        //file containts two lines seperated by newline, first username, second password
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader("login.txt"));
+            String line = reader.readLine();
+            if(line != null) {
+                user = line;
+            }
+            line = reader.readLine();
+            if(line != null) {
+                pass = line;
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //TODO Hier PW und Nutzername eingeben
         //String user = ui.getLine("Please enter your Agnes user name");
-        String user = "username";
         // TODO: validate user, eg only lowercase, max 8 char, text only
         //String pass = ui.getLine("Please enter your Agnes password", true);
-        String pass = "password";
 
         ui.Log("Contacting Agnes..");
         AgnesAdapter.AgnesLogonResult result = agnes.signIn(user, pass);
