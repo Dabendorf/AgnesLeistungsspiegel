@@ -20,25 +20,28 @@ public class Leistungsspiegel {
         abschlüsse = new ArrayList<>();
 
         String preparedLS = prepareLeistungsspiegel(rawLeistungsspiegelHtml);
+        String filename = "leistungsspiegel.txt";
         
         //System.out.println(preparedLS); //PRINT leistungsspiegel
         try {
             String content = "Empty";
             try {
-                content = new String(Files.readAllBytes(Paths.get("out.txt")));
+                content = new String(Files.readAllBytes(Paths.get(filename)));
             } catch(NoSuchFileException e) {
-                FileWriter fw = new FileWriter("out.txt");
+                FileWriter fw = new FileWriter(filename);
                 fw.write("Empty");
                 fw.close();
             }
             
 
             if(content.equals(preparedLS)) {
+                //System.exit(0);
                 System.out.println("TRUE");
             } else {
+                //System.exit(1);
                 System.out.println("FALSE");
             }
-            FileWriter fw = new FileWriter("out.txt");
+            FileWriter fw = new FileWriter(filename);
             fw.write(preparedLS);
          
             fw.close();
