@@ -51,13 +51,18 @@ public class Main {
             link = agnes.getLeistungsspiegelLinkFromStartPage(result.cookie);
 
             ui.Log("Getting Leistungsspiegel-page to parser for detail-page link..");
-            link = agnes.getLeistungspiegelDetailLinkFromLeistungspiegelPage(link, result.cookie);
+            String link2[] = agnes.getLeistungspiegelDetailLinkFromLeistungspiegelPage(link, result.cookie);
 
             ui.Log("Getting (raw) Leistungsspiegel from detail-page..");
-            String rawLeistungsspiegel = agnes.getRawLeistungsspiegel(link, result.cookie);
+            String[] rawLeistungsspiegel = new String[2];
 
-            ui.Log("Parsing raw Leistungsspiegel..");
-            Leistungsspiegel ls = new Leistungsspiegel(rawLeistungsspiegel);
+            for(int i=0;i<2;i++) {
+                rawLeistungsspiegel[i] = agnes.getRawLeistungsspiegel(link2[i], result.cookie);
+                //System.out.println(rawLeistungsspiegel[i]);
+
+                ui.Log("Parsing raw Leistungsspiegel..");
+                Leistungsspiegel ls = new Leistungsspiegel(rawLeistungsspiegel[i]);
+            }
 
             ui.Log("Done");
         } else {

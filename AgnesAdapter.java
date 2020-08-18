@@ -97,28 +97,35 @@ public class AgnesAdapter {
     }
 
     String getLeistungsspiegelLinkFromStartPage(String cookie) {
-        String leistungsSpiegelLink = GetLineFromResult(AGNES_START_URL, "Leistungsspiegel", cookie);
+        String leistungsSpiegelLink = GetLineFromResult(AGNES_START_URL, "Leistungsspiegel", cookie, 0);
 
         return leistungsSpiegelLink.substring(leistungsSpiegelLink.lastIndexOf("<a href=\"") + 9,
                 leistungsSpiegelLink.lastIndexOf("\" class")).replace("&amp;", "&");
     }
 
-    String getLeistungspiegelDetailLinkFromLeistungspiegelPage(String url, String cookie) {
-        String leistungsSpiegelDetails = GetLineFromResult(url,">Detailansicht<", cookie);
+    String[] getLeistungspiegelDetailLinkFromLeistungspiegelPage(String url, String cookie) {
+        String[] leistungsSpiegelDetails = new String[2];
+        leistungsSpiegelDetails[0] = GetLineFromResult(url,">Detailansicht<", cookie, 0);
+        leistungsSpiegelDetails[1] = GetLineFromResult(url,">Detailansicht<", cookie, 1);
 
-        return leistungsSpiegelDetails.substring(leistungsSpiegelDetails.lastIndexOf("<a href=\"") + 9,
-                leistungsSpiegelDetails.lastIndexOf("\" title")).replace("&amp;", "&");
+        String returnValue[] = new String[2];
+        returnValue[0] = leistungsSpiegelDetails[0].substring(leistungsSpiegelDetails[0].lastIndexOf("<a href=\"") + 9,
+                leistungsSpiegelDetails[0].lastIndexOf("\" title")).replace("&amp;", "&");
+        returnValue[1] = leistungsSpiegelDetails[1].substring(leistungsSpiegelDetails[1].lastIndexOf("<a href=\"") + 9,
+                leistungsSpiegelDetails[1].lastIndexOf("\" title")).replace("&amp;", "&");
+        return returnValue;
     }
 
     String getRawLeistungsspiegel(String url, String cookie) {
         String leistungsspiegelPage = GetPage(url, cookie);
+       //System.out.println(leistungsspiegelPage);
         return leistungsspiegelPage.substring(
                 leistungsspiegelPage.indexOf("<table"),
                 leistungsspiegelPage.indexOf("</table>") + 8
         );
     }
 
-    private String GetLineFromResult(String url, String lineMark, String cookie) {
+    private String GetLineFromResult(String url, String lineMark, String cookie, int occurenceNum) {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) new URL(url).openConnection();
@@ -167,7 +174,11 @@ public class AgnesAdapter {
             }
             if (c == '\n') {
                 if (line.toString().contains(lineMark)) {
-                    return line.toString();
+                    if(occurenceNum==0) {
+                        return line.toString();
+                    } else{
+                        occurenceNum--;
+                    }
                 }
                 line = new StringBuilder();
             }

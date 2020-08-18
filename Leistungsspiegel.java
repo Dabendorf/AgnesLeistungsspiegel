@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.NoSuchFileException;
+import java.util.Arrays;
 
 
 public class Leistungsspiegel {
@@ -18,7 +19,6 @@ public class Leistungsspiegel {
 
     Leistungsspiegel(String rawLeistungsspiegelHtml) {
         abschlüsse = new ArrayList<>();
-
         String preparedLS = prepareLeistungsspiegel(rawLeistungsspiegelHtml);
         System.out.println(preparedLS); //PRINT leistungsspiegel
 
@@ -114,7 +114,11 @@ public class Leistungsspiegel {
                     lines[i] = new DetailsLine(content[0], content[1], content[2], content[3], content[4], content[5], content[6], content[7], content[8], content[9], content[10]);
                 } else {
                     String[] content = leistungsspiegelTable[i].replace("\n", "").split("\t", 2);
-                    lines[i] = new CourseLine(content[0], content[1]);
+                    try {
+                        lines[i] = new CourseLine(content[0], content[1]);
+                    } catch(ArrayIndexOutOfBoundsException a) { 
+                        lines[i] = new CourseLine(content[0], "");;
+                    }
                 }
             }
         }
